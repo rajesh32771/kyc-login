@@ -1,0 +1,10 @@
+<h3>KYC Video Recorder</h3>
+<video #video width="400" autoplay muted></video>
+<video #playback width="400" controls *ngIf="videoURL"></video>
+
+<div class="actions">
+  <button (click)="startCamera()">Start Camera</button>
+  <button (click)="startRecording()" [disabled]="!cameraStarted">Start Recording</button>
+  <button (click)="stopRecording()" [disabled]="!recording">Stop Recording</button>
+  <a *ngIf="videoURL" [href]="videoURL" download="kyc-video.webm">Download Video</a>
+</div>

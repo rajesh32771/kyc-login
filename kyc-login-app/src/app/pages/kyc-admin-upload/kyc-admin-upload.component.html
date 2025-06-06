@@ -1,0 +1,50 @@
+<div class="upload-container">
+    <h2>Upload KYC Documents</h2>
+
+    <form (ngSubmit)="submit()" #kycForm="ngForm">
+      <label>
+        Name:
+        <input type="text" [(ngModel)]="form.name" name="name" required />
+      </label>
+
+      <label>
+        Date of Birth:
+        <input type="date" [(ngModel)]="form.dob" name="dob" required />
+      </label>
+
+      <label>
+        Upload PAN Card:
+        <input type="file" (change)="handleFile($event, 'pan')" required />
+      </label>
+
+      <label>
+        Upload Aadhaar Card:
+        <input type="file" (change)="handleFile($event, 'aadhaar')" required />
+      </label>
+
+      <label>
+        Upload Optional Audio:
+        <input type="file" accept="audio/*" (change)="handleFile($event, 'audio')" />
+      </label>
+
+      <label>
+        Upload Optional Video:
+        <input type="file" accept="video/*" (change)="handleFile($event, 'video')" />
+      </label>
+
+      <button type="submit" [disabled]="!kycForm.form.valid">Submit KYC</button>
+    </form>
+
+    <div *ngIf="submitted" class="result">
+      <h4>KYC Submitted Successfully!</h4>
+      <p><strong>Name:</strong> {{ form.name }}</p>
+      <p><strong>DOB:</strong> {{ form.dob }}</p>
+      <p><strong>Files:</strong></p>
+      <ul>
+        <li>PAN: {{ form.pan?.name }}</li>
+        <li>Aadhaar: {{ form.aadhaar?.name }}</li>
+        <li *ngIf="form.audio">Audio: {{ form.audio?.name }}</li>
+        <li *ngIf="form.video">Video: {{ form.video?.name }}</li>
+      </ul>
+    </div>
+  </div>
