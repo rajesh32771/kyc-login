@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kyc-dashboard.component',
@@ -11,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 export class KycDashboardComponent {
   filterText = '';
   selectedUser: any = null;
+
+  constructor(private router: Router) {}
 
   kycList = [
     { name: 'Rajesh Kumar', document: 'Aadhar', status: 'Approved', date: '2025-06-01' },
@@ -30,6 +33,14 @@ export class KycDashboardComponent {
 
   view(user: any) {
     this.selectedUser = user;
+  }
+
+  startKyc(user:any){
+     this.router.navigate(['/admin-upload']);
+  }
+
+  retryKyc(user:any){
+    
   }
 
   close() {

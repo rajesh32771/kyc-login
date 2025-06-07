@@ -1,10 +1,6 @@
-<h3>KYC Video Recorder</h3>
-<video #video width="400" autoplay muted></video>
-<video #playback width="400" controls *ngIf="videoURL"></video>
-
-<div class="actions">
-  <button (click)="startCamera()">Start Camera</button>
-  <button (click)="startRecording()" [disabled]="!cameraStarted">Start Recording</button>
-  <button (click)="stopRecording()" [disabled]="!recording">Stop Recording</button>
-  <a *ngIf="videoURL" [href]="videoURL" download="kyc-video.webm">Download Video</a>
-</div>
+<video #video autoplay playsinline width="400" height="300"></video>
+<br />
+<button (click)="capture()">Capture Image</button>
+<button *ngIf="capturedImage" (click)="downloadImage()">Download Image</button>
+<br />
+<img [src]="capturedImage" *ngIf="capturedImage" alt="Snapshot" width="400" />

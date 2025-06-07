@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-kyc-video-recorder',
@@ -9,45 +10,35 @@ import { CommonModule } from '@angular/common';
   styleUrl: './kyc-video-recorder.component.css'
   
 })
-export class KycVideoRecorderComponent {
-  mediaRecorder!: MediaRecorder;
-  chunks: Blob[] = [];
-  videoURL: string | null = null;
-  cameraStarted = false;
-  recording = false;
+export class KycVideoRecorderComponent implements AfterViewInit {
+  @ViewChild('video', { static: false }) videoRef!: ElementRef<HTMLVideoElement>;
+  capturedImage: string | null = null;
 
-  startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-      const video: HTMLVideoElement = document.querySelector('video#video')!;
-      video.srcObject = stream;
-      this.mediaRecorder = new MediaRecorder(stream);
-
-      this.mediaRecorder.ondataavailable = (e) => this.chunks.push(e.data);
-      this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.chunks, { type: 'video/webm' });
-        this.videoURL = URL.createObjectURL(blob);
-        this.chunks = [];
-
-        const playback = document.querySelector('video#playback') as HTMLVideoElement;
-        if (playback) playback.src = this.videoURL;
-      };
-
-      this.cameraStarted = true;
-    }).catch(err => console.error('Camera error:', err));
+  ngAfterViewInit() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        const video = this.videoRef.nativeElement;
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        console.error('Camera access denied:', err);
+      });
   }
 
-  startRecording() {
-    if (this.mediaRecorder) {
-      this.chunks = [];
-      this.mediaRecorder.start();
-      this.recording = true;
-    }
+  capture() {
+    const video = this.videoRef.nativeElement;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 400;
+    canvas.height = video.videoHeight || 300;
+    canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+    this.capturedImage = canvas.toDataURL('image/png');
   }
 
-  stopRecording() {
-    if (this.mediaRecorder && this.recording) {
-      this.mediaRecorder.stop();
-      this.recording = false;
-    }
+    downloadImage() {
+    if (!this.capturedImage) return;
+    const a = document.createElement('a');
+    a.href = this.capturedImage;
+    a.download = 'captured-image.png';
+    a.click();
   }
 }

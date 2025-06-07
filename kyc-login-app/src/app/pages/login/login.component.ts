@@ -20,7 +20,7 @@ export class LoginComponent {
 
   onLogin() {
     if (this.auth.login(this.username, this.password)) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/kyc-dashboard']);
     } else {
       this.router.navigate(['/user-upload']);
       //  this.loginFailed = true;

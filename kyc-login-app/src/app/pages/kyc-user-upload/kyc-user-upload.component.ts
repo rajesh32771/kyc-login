@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-kyc-admin-upload',
@@ -21,12 +24,17 @@ export class KycUserUploadComponent {
   };
 
   submitted = false;
+  constructor(private router: Router) {}
 
   handleFile(event: any, type: string) {
     const file = event.target.files[0];
     if (file) {
       this.form[type] = file;
     }
+  }
+
+  uploadVideo(){
+    this.router.navigate(['/kyc-video']);
   }
 
   submit() {

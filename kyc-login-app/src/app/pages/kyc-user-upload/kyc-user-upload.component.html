@@ -21,15 +21,13 @@
         Upload Aadhaar Card:
         <input type="file" (change)="handleFile($event, 'aadhaar')" required />
       </label>
-
+  
       <label>
-        Upload Optional Audio:
-        <input type="file" accept="audio/*" (change)="handleFile($event, 'audio')" />
-      </label>
-
-      <label>
-        Upload Optional Video:
-        <input type="file" accept="video/*" (change)="handleFile($event, 'video')" />
+        Upload Video:
+        <button type="button"  (click)="uploadVideo()" >
+       <img src="assets/icons/camera.svg" >
+        </button>
+        
       </label>
 
       <button type="submit" [disabled]="!kycForm.form.valid">Submit KYC</button>

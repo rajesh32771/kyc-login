@@ -35,7 +35,15 @@
             </td>
             <td>{{ user.date }}</td>
             <td>
-              <button (click)="view(user)">View</button>
+              <div *ngIf="user.status === 'Pending'">
+                <button (click)="startKyc(user)">Start</button>
+               </div>
+              <div *ngIf="user.status === 'Approved'">
+                <button (click)="view(user)">View</button>
+               </div>
+              <div *ngIf="user.status === 'Rejected'">
+                <button (click)="retryKyc(user)">Retry</button>
+               </div>
             </td>
           </tr>
           <tr *ngIf="filteredList().length === 0">
