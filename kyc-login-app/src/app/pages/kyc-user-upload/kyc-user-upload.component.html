@@ -22,28 +22,17 @@
         <input type="file"  (change)="onPdfSelected($event)" accept="application/pdf"  required />
       </label>
 
-      <label>
+      <label class="upload-label">
         Upload Video:
-        <button type="button"  (click)="uploadVideo()" >
-        <img src="/src/assets/icons/camera.svg" alt="Camera Icon" width="24" height="24">
-        </button>
+        <button type="button" class="upload-btn" (click)="uploadVideo()" >🎥</button>
+
       </label>
 
 
 
-      <button type="submit" [disabled]="!kycForm.form.valid">Submit KYC</button>
+
+      <button type="submit" [disabled]="!isFormValid()">Submit KYC</button>
     </form>
 
-    <div *ngIf="submitted" class="result">
-      <h4>KYC Submitted Successfully!</h4>
-      <p><strong>Name:</strong> {{ form.name }}</p>
-      <p><strong>DOB:</strong> {{ form.dob }}</p>
-      <p><strong>Files:</strong></p>
-      <ul>
-        <li>PAN: {{ form.pan?.name }}</li>
-        <li>Aadhaar: {{ form.aadhaar?.name }}</li>
-        <li *ngIf="form.audio">Audio: {{ form.audio?.name }}</li>
-        <li *ngIf="form.video">Video: {{ form.video?.name }}</li>
-      </ul>
-    </div>
+
   </div>

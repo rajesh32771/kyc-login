@@ -53,3 +53,47 @@
 input[type="file"]:hover {
   background-color: #e0eaff;
 }
+
+
+/* button-with-image.component.css */
+button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button img {
+  vertical-align: middle;
+}
+
+.upload-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.icon-style-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1976d2;
+  color: white;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.icon-style-btn:hover {
+  background-color: #125ea7;
+  transform: scale(1.05);
+}

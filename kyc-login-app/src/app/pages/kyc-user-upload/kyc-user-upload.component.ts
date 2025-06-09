@@ -22,16 +22,15 @@ export class KycUserUploadComponent {
     audio: null,
     video: null,
   };
-
+  isPanCardSelected = false;
+  isAadhardSelected = false;
 
   imageFile: File | null = null;
   pdfFile: File | null = null;
   videoFile: File | null = null;
 
   submitted = false;
-  constructor(private router: Router,
-    private http: HttpClient
-  ) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   handleFile(event: any, type: string) {
     const file = event.target.files[0];
@@ -44,16 +43,38 @@ export class KycUserUploadComponent {
     this.router.navigate(['/kyc-video']);
   }
 
+  isFormValid(): boolean {
+    return (
+      this.form.name.trim() !== '' &&
+      this.form.rm !== null &&
+      this.isPanCardSelected &&
+      this.isAadhardSelected
+    );
+  }
+
   onImageSelected(event: any): void {
     const file = event.target.files[0];
-    if (file && file.type.startsWith('image/jpeg')) this.imageFile = file;
-    else alert('Only JPEG images are allowed');
+    if (
+      file &&
+      (file.type.startsWith('image/jpeg') || file.type.startsWith('image/jpg'))
+    ) {
+      this.imageFile = file;
+      this.isPanCardSelected = true;
+      this.form.pan = file;
+    } else {
+      this.isPanCardSelected = false;
+    }
   }
 
   onPdfSelected(event: any): void {
     const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') this.pdfFile = file;
-    else alert('Only PDF files are allowed');
+    if (file && file.type === 'application/pdf') {
+      this.pdfFile = file;
+      this.isAadhardSelected = true;
+    } else {
+      this.isAadhardSelected = false;
+      alert('Only PDF files are allowed');
+    }
   }
 
   onVideoSelected(event: any): void {
@@ -72,21 +93,30 @@ export class KycUserUploadComponent {
     formData.append('rm', this.form.rm);
     const headers = new HttpHeaders({ 'Content-Type': 'multipart/form-data' });
 
-    this.http.post('https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles', formData).subscribe({
-      next: (res) => alert('panCard uploaded successfully!'),
-      error: () => alert('Upload failed!'),
-    });
-
+    this.http
+      .post(
+        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
+        formData
+      )
+      .subscribe({
+        next: (res) => alert('panCard uploaded successfully!'),
+        error: () => alert('Upload failed!'),
+      });
 
     if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
     formData.append('name', this.form.name);
     formData.append('rm', this.form.rm);
 
-     this.http.post('https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles', formData).subscribe({
-      next: (res) => alert('aadhar Files uploaded successfully!'),
-      error: () => alert('Upload failed!'),
-    });
+    this.http
+      .post(
+        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
+        formData
+      )
+      .subscribe({
+        next: (res) => alert('aadhar Files uploaded successfully!'),
+        error: () => alert('Upload failed!'),
+      });
     // Normally, here you'd send form data to the backend
   }
 }
