@@ -8,27 +8,28 @@
       </label>
 
       <label>
-        Date of Birth:
-        <input type="date" [(ngModel)]="form.dob" name="dob" required />
+        Relationship Manager:
+        <input type="text" [(ngModel)]="form.rm" name="rm" required />
       </label>
 
       <label>
         Upload PAN Card:
-        <input type="file" (change)="handleFile($event, 'pan')" required />
+        <input type="file" (change)="onImageSelected($event)" accept="image/jpeg, image/jpg" required />
       </label>
 
       <label>
         Upload Aadhaar Card:
-        <input type="file" (change)="handleFile($event, 'aadhaar')" required />
+        <input type="file"  (change)="onPdfSelected($event)" accept="application/pdf"  required />
       </label>
-  
+
       <label>
         Upload Video:
         <button type="button"  (click)="uploadVideo()" >
-       <img src="assets/icons/camera.svg" >
+        <img src="/src/assets/icons/camera.svg" alt="Camera Icon" width="24" height="24">
         </button>
-        
       </label>
+
+
 
       <button type="submit" [disabled]="!kycForm.form.valid">Submit KYC</button>
     </form>
