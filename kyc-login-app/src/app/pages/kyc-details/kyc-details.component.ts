@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './kyc-details.component.html',
-  styleUrl: './kyc-details.component.css'
+  styleUrl: './kyc-details.component.css',
 })
 export class KycDetailsComponent implements OnInit {
   userId: string | null = null;
@@ -25,7 +25,7 @@ export class KycDetailsComponent implements OnInit {
       dob: '1980-10-15',
       pan: 'ABCDE1234F',
       aadhaar: '1234-5678-9012',
-      status: 'Pending'
+      status: 'Pending',
     };
   }
 

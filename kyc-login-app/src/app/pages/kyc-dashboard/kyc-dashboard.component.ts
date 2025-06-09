@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-kyc-dashboard.component',
   imports: [CommonModule, FormsModule],
   templateUrl: './kyc-dashboard.component.html',
-  styleUrl: './kyc-dashboard.component.css'
+  styleUrl: './kyc-dashboard.component.css',
 })
 export class KycDashboardComponent {
   filterText = '';
@@ -16,18 +16,44 @@ export class KycDashboardComponent {
   constructor(private router: Router) {}
 
   kycList = [
-    { name: 'Rajesh Kumar', document: 'Aadhar', status: 'Approved', date: '2025-06-01' },
-    { name: 'Sonal Patel', document: 'PAN', status: 'Pending', date: '2025-06-02' },
-    { name: 'Ankit Sharma', document: 'Voter ID', status: 'Rejected', date: '2025-06-03' },
-    { name: 'Divya Jain', document: 'Aadhar', status: 'Approved', date: '2025-06-04' },
-    { name: 'Vikram Mehta', document: 'PAN', status: 'Pending', date: '2025-06-05' },
+    {
+      name: 'Rajesh Kumar',
+      document: 'Aadhar',
+      status: 'Approved',
+      date: '2025-06-01',
+    },
+    {
+      name: 'Sonal Patel',
+      document: 'PAN',
+      status: 'Pending',
+      date: '2025-06-02',
+    },
+    {
+      name: 'Ankit Sharma',
+      document: 'Voter ID',
+      status: 'Rejected',
+      date: '2025-06-03',
+    },
+    {
+      name: 'Divya Jain',
+      document: 'Aadhar',
+      status: 'Approved',
+      date: '2025-06-04',
+    },
+    {
+      name: 'Vikram Mehta',
+      document: 'PAN',
+      status: 'Pending',
+      date: '2025-06-05',
+    },
   ];
 
   filteredList() {
     const text = this.filterText.trim().toLowerCase();
-    return this.kycList.filter(user =>
-      user.name.toLowerCase().includes(text) ||
-      user.status.toLowerCase().includes(text)
+    return this.kycList.filter(
+      (user) =>
+        user.name.toLowerCase().includes(text) ||
+        user.status.toLowerCase().includes(text)
     );
   }
 
@@ -35,13 +61,11 @@ export class KycDashboardComponent {
     this.selectedUser = user;
   }
 
-  startKyc(user:any){
-     this.router.navigate(['/admin-upload']);
+  startKyc(user: any) {
+    this.router.navigate(['/admin-upload']);
   }
 
-  retryKyc(user:any){
-    
-  }
+  retryKyc(user: any) {}
 
   close() {
     this.selectedUser = null;

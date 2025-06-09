@@ -1,26 +1,26 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-kyc-video-recorder',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './kyc-video-recorder.component.html',
-  styleUrl: './kyc-video-recorder.component.css'
-  
+  styleUrl: './kyc-video-recorder.component.css',
 })
 export class KycVideoRecorderComponent implements AfterViewInit {
-  @ViewChild('video', { static: false }) videoRef!: ElementRef<HTMLVideoElement>;
+  @ViewChild('video', { static: false })
+  videoRef!: ElementRef<HTMLVideoElement>;
   capturedImage: string | null = null;
 
   ngAfterViewInit() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
         const video = this.videoRef.nativeElement;
         video.srcObject = stream;
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Camera access denied:', err);
       });
   }
@@ -30,11 +30,13 @@ export class KycVideoRecorderComponent implements AfterViewInit {
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth || 400;
     canvas.height = video.videoHeight || 300;
-    canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas
+      .getContext('2d')
+      ?.drawImage(video, 0, 0, canvas.width, canvas.height);
     this.capturedImage = canvas.toDataURL('image/png');
   }
 
-    downloadImage() {
+  downloadImage() {
     if (!this.capturedImage) return;
     const a = document.createElement('a');
     a.href = this.capturedImage;

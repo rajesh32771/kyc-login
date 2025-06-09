@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-kyc-audio-recorder',
   standalone: true,
   imports: [CommonModule],
-  styleUrl : './kyc-audio-recorder.component.css',
-  templateUrl: "./kyc-audio-recorder.component.html"  
+  styleUrl: './kyc-audio-recorder.component.css',
+  templateUrl: './kyc-audio-recorder.component.html',
 })
 export class KycAudioRecorderComponent {
   mediaRecorder: MediaRecorder | null = null;

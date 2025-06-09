@@ -6,8 +6,7 @@ import { Router, RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './kyc-landing.component.html',
-  styleUrl: './kyc-landing.component.css'
-  
+  styleUrl: './kyc-landing.component.css',
 })
 export class KycLandingComponent {
   constructor(private router: Router) {}

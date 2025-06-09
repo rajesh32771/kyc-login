@@ -1,68 +1,64 @@
 <div class="kyc-dashboard">
-    <h2>KYC Dashboard</h2>
+  <h2>KYC Dashboard</h2>
 
-    <div class="filter-bar">
-      <input
-        type="text"
-        [(ngModel)]="filterText"
-        placeholder="Search by name or status..."
-      />
-    </div>
+  <div class="filter-bar">
+    <input type="text" [(ngModel)]="filterText" placeholder="Search by name or status..." />
+  </div>
 
-    <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Customer Name</th>
-            <th>Document Type</th>
-            <th>Status</th>
-            <th>Uploaded On</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of filteredList(); let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.document }}</td>
-            <td [ngClass]="{
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Customer Name</th>
+          <th>Document Type</th>
+          <th>Status</th>
+          <th>Uploaded On</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredList(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.document }}</td>
+          <td [ngClass]="{
               approved: user.status === 'Approved',
               pending: user.status === 'Pending',
               rejected: user.status === 'Rejected'
             }">
-              {{ user.status }}
-            </td>
-            <td>{{ user.date }}</td>
-            <td>
-              <div *ngIf="user.status === 'Pending'">
-                <button (click)="startKyc(user)">Start</button>
-               </div>
-              <div *ngIf="user.status === 'Approved'">
-                <button (click)="view(user)">View</button>
-               </div>
-              <div *ngIf="user.status === 'Rejected'">
-                <button (click)="retryKyc(user)">Retry</button>
-               </div>
-            </td>
-          </tr>
-          <tr *ngIf="filteredList().length === 0">
-            <td colspan="6" style="text-align:center;">No records found</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal-backdrop" *ngIf="selectedUser">
-        <div class="modal">
-          <h3>KYC Details</h3>
-          <p><strong>Name:</strong> {{ selectedUser.name }}</p>
-          <p><strong>Document:</strong> {{ selectedUser.document }}</p>
-          <p><strong>Status:</strong> {{ selectedUser.status }}</p>
-          <p><strong>Date:</strong> {{ selectedUser.date }}</p>
-          <button class="close-btn" (click)="close()">Close</button>
-        </div>
-      </div>
-      
+            {{ user.status }}
+          </td>
+          <td>{{ user.date }}</td>
+          <td>
+            <div *ngIf="user.status === 'Pending'">
+              <button (click)="startKyc(user)">Start</button>
+            </div>
+            <div *ngIf="user.status === 'Approved'">
+              <button (click)="view(user)">View</button>
+            </div>
+            <div *ngIf="user.status === 'Rejected'">
+              <button (click)="retryKyc(user)">Retry</button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="filteredList().length === 0">
+          <td colspan="6" style="text-align:center;">No records found</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" *ngIf="selectedUser">
+    <div class="modal">
+      <h3>KYC Details</h3>
+      <p><strong>Name:</strong> {{ selectedUser.name }}</p>
+      <p><strong>Document:</strong> {{ selectedUser.document }}</p>
+      <p><strong>Status:</strong> {{ selectedUser.status }}</p>
+      <p><strong>Date:</strong> {{ selectedUser.date }}</p>
+      <button class="close-btn" (click)="close()">Close</button>
+    </div>
+  </div>
+
+</div>

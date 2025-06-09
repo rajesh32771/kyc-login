@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -56,7 +54,9 @@ export class KycUserUploadComponent {
     const file = event.target.files[0];
     if (
       file &&
-      (file.type.startsWith('image/jpeg') || file.type.startsWith('image/jpg'))
+      (file.type.startsWith('image/jpeg') ||
+        file.type.startsWith('image/jpg') ||
+        file.type.startsWith('image/png'))
     ) {
       this.imageFile = file;
       this.isPanCardSelected = true;
