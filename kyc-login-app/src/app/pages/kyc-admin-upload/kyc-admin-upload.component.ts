@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrl: './kyc-admin-upload.component.css',
   templateUrl: './kyc-admin-upload.component.html',
 })
-export class KycAdminUploadComponent {
+export class KycAdminUploadComponent implements OnInit {
   form: any = {
     name: '',
     rm: '',
@@ -26,13 +26,20 @@ export class KycAdminUploadComponent {
   videoFile: File | null = null;
   audioFile: File | null = null;
 
-  isPanCardSelected = false;
-  isAadhardSelected = false;
-  isAudioFileSelected = true;
-  isVideoFileSelected = false;
-
-  submitted = false;
+  isPanCardSelected: boolean = false;
+  isAadhardSelected: boolean = false;
+  isAudioFileSelected: boolean = true;
+  isVideoFileSelected: boolean = false;
+  userData: any = null;
+  submitted: boolean = false;
   constructor(private router: Router, private http: HttpClient) {}
+
+  ngOnInit() {
+    this.userData = history.state.user;
+    console.log(this.userData);
+
+    // You can now call an API to fetch full user detail using this.userId
+  }
 
   handleFile(event: any, type: string) {
     const file = event.target.files[0];
@@ -43,8 +50,8 @@ export class KycAdminUploadComponent {
 
   isFormValid(): boolean {
     return (
-      this.form.name.trim() !== '' &&
-      this.form.rm !== null &&
+      this.userData.name.trim() !== '' &&
+      this.userData.rm !== null &&
       this.isPanCardSelected &&
       this.isAadhardSelected &&
       this.isAudioFileSelected &&
@@ -89,13 +96,13 @@ export class KycAdminUploadComponent {
   }
 
   submit() {
-    const formData = new FormData();
+    let formData = new FormData();
 
     if (this.imageFile) formData.append('panCard', this.imageFile);
 
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.form.name);
-    formData.append('rm', this.form.rm);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
     const headers = new HttpHeaders({ 'Content-Type': 'multipart/form-data' });
 
     this.http
@@ -108,10 +115,11 @@ export class KycAdminUploadComponent {
         error: () => alert('Upload failed!'),
       });
 
+    formData = new FormData();
     if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.form.name);
-    formData.append('rm', this.form.rm);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
 
     this.http
       .post(
@@ -123,10 +131,11 @@ export class KycAdminUploadComponent {
         error: () => alert('Upload failed!'),
       });
 
+    formData = new FormData();
     if (this.audioFile) formData.append('audio', this.audioFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.form.name);
-    formData.append('rm', this.form.rm);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
 
     this.http
       .post(
@@ -138,10 +147,11 @@ export class KycAdminUploadComponent {
         error: () => alert('Upload failed!'),
       });
 
+    formData = new FormData();
     if (this.videoFile) formData.append('video', this.videoFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.form.name);
-    formData.append('rm', this.form.rm);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
 
     this.http
       .post(

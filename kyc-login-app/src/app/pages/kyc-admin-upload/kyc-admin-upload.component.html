@@ -4,12 +4,12 @@
   <form (ngSubmit)="submit()" #kycForm="ngForm">
     <label>
       Name:
-      <input type="text" [(ngModel)]="form.name" name="name" required />
+      <input type="text" [(ngModel)]="userData.name" name="name" required />
     </label>
 
     <label>
       Relationship Manager:
-      <input type="text" [(ngModel)]="form.rm" name="rm" required />
+      <input type="text" [(ngModel)]="userData.rm" name="rm" required />
     </label>
 
     <label>

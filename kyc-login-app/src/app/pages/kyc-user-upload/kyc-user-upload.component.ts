@@ -84,7 +84,7 @@ export class KycUserUploadComponent {
   }
 
   submit() {
-    const formData = new FormData();
+    let formData = new FormData();
 
     if (this.imageFile) formData.append('panCard', this.imageFile);
 
@@ -103,6 +103,7 @@ export class KycUserUploadComponent {
         error: () => alert('Upload failed!'),
       });
 
+    formData = new FormData();
     if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
     formData.append('name', this.form.name);

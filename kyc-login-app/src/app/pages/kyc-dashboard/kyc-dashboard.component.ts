@@ -18,30 +18,35 @@ export class KycDashboardComponent {
   kycList = [
     {
       name: 'Rajesh Kumar',
+      rm : 'Kumar',
       document: 'Aadhar',
       status: 'Approved',
       date: '2025-06-01',
     },
     {
       name: 'Sonal Patel',
+      rm : 'Lavanya',
       document: 'PAN',
       status: 'Pending',
       date: '2025-06-02',
     },
     {
       name: 'Ankit Sharma',
+      rm : 'Monika',
       document: 'Voter ID',
       status: 'Rejected',
       date: '2025-06-03',
     },
     {
       name: 'Divya Jain',
+      rm : 'Ajith',
       document: 'Aadhar',
       status: 'Approved',
       date: '2025-06-04',
     },
     {
       name: 'Vikram Mehta',
+      rm : 'Venkat',
       document: 'PAN',
       status: 'Pending',
       date: '2025-06-05',
@@ -62,11 +67,11 @@ export class KycDashboardComponent {
   }
 
   startKyc(user: any) {
-    this.router.navigate(['/admin-upload']);
+    this.router.navigate(['/admin-upload'], { state: { user } });
   }
 
   retryKyc(user: any) {
-     this.router.navigate(['/admin-upload']);
+    this.router.navigate(['/admin-upload']), { state: { user } };
   }
 
   close() {
