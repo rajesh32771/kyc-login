@@ -178,7 +178,7 @@ export class KycAdminUploadComponent implements OnInit {
    //   const base64String = reader.result as string; // keep the full data URL
  //    console.log('Base64 String:', base64String);
     const paddedBase64 = this.padBase64(base64String); // ensure correct length
-    console.log(paddedBase64); // send this to your API
+  //  console.log(paddedBase64); // send this to your API
       this.uploadToApi(paddedBase64);
     };
     reader.readAsDataURL(file);
@@ -213,18 +213,19 @@ padBase64(base64: string): string {
               //   const jsonString = response.body.replace(/'/g, '"');
                    // Replace single quotes around keys
              //let      jsonstr = response.body.replace(/'([^']+)':/g, '$1:');
-               console.log('##################### Response Body:', response.body);
+             //  console.log('##################### Response Body:', response.body);
                this.splitArray =response.body.split(',');
                let factDetectedArr = this.splitArray[0].split(':');
-               console.log('Split Array:', this.splitArray[0]);
-                  console.log('Split Array:', this.splitArray[1]);
+              // console.log('Split Array:', this.splitArray[0]);
+              //    console.log('Split Array:', this.splitArray[1]);
                if(factDetectedArr[0].includes('FaceDetected') && factDetectedArr[1].includes('True')) {
                 this.isPassportPhotoSelected = true;
                 this.passportPhotoMsg = 'Passport photo uploaded successfully!';
                  return;
                }else{
                 this.isPassportPhotoSelected = false;
-                this.passportPhotoMsg = 'Passport photo upload failed!';
+                //this.passportPhotoMsg = 'Passport photo upload failed!';
+                this.passportPhotoMsg = this.splitArray[0];
                }
 
                
