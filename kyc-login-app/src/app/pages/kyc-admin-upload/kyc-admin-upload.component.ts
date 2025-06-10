@@ -25,11 +25,13 @@ export class KycAdminUploadComponent implements OnInit {
   pdfFile: File | null = null;
   videoFile: File | null = null;
   audioFile: File | null = null;
+  splitArray: string[] = [];
+  passportPhotoMsg: string = '';
 
   isPanCardSelected: boolean = false;
   isAadhardSelected: boolean = false;
   isAudioFileSelected: boolean = true;
-  isVideoFileSelected: boolean = false;
+  isPassportPhotoSelected: boolean = false;
   userData: any = null;
   submitted: boolean = false;
   constructor(private router: Router, private http: HttpClient) {}
@@ -55,7 +57,7 @@ export class KycAdminUploadComponent implements OnInit {
       this.isPanCardSelected &&
       this.isAadhardSelected &&
       this.isAudioFileSelected &&
-      this.isVideoFileSelected
+      this.isPassportPhotoSelected
     );
   }
 
@@ -81,11 +83,11 @@ export class KycAdminUploadComponent implements OnInit {
 
       if (!file.type.startsWith('video/')) {
         alert('Please select a valid video file (mp4/webm/ogg)');
-        this.isVideoFileSelected = false;
+        this.isPassportPhotoSelected = false;
         return;
       }
 
-      this.isVideoFileSelected = true;
+      this.isPassportPhotoSelected = true;
 
       this.videoFile = file;
     }
@@ -174,7 +176,7 @@ export class KycAdminUploadComponent implements OnInit {
     reader.onload = () => {
       const base64String = (reader.result as string).split(',')[1]; // remove data:image/jpeg;base64,
    //   const base64String = reader.result as string; // keep the full data URL
-     console.log('Base64 String:', base64String);
+ //    console.log('Base64 String:', base64String);
     const paddedBase64 = this.padBase64(base64String); // ensure correct length
     console.log(paddedBase64); // send this to your API
       this.uploadToApi(paddedBase64);
@@ -189,9 +191,13 @@ uploadToApi(base64Image: string): void {
   };
 
   this.http.post('https://6xwvmbv78k.execute-api.us-west-2.amazonaws.com/kyc/PassportPhoto', payload).subscribe({
-    next: res => console.log('Upload success', res),
+    next: res => {
+   //   console.log('Upload success', res)
+      
+      this.processResponse(res)
+    },
     error: err => console.error('Upload failed', err)
-  });
+  }); 
 }
 padBase64(base64: string): string {
   const remainder = base64.length % 4;
@@ -200,4 +206,40 @@ padBase64(base64: string): string {
   }
   return base64;
 }
+ processResponse(response: any) {
+         if (response && response.body) {
+             try {
+              
+              //   const jsonString = response.body.replace(/'/g, '"');
+                   // Replace single quotes around keys
+             //let      jsonstr = response.body.replace(/'([^']+)':/g, '$1:');
+               console.log('##################### Response Body:', response.body);
+               this.splitArray =response.body.split(',');
+               let factDetectedArr = this.splitArray[0].split(':');
+               console.log('Split Array:', this.splitArray[0]);
+                  console.log('Split Array:', this.splitArray[1]);
+               if(factDetectedArr[0].includes('FaceDetected') && factDetectedArr[1].includes('True')) {
+                this.isPassportPhotoSelected = true;
+                this.passportPhotoMsg = 'Passport photo uploaded successfully!';
+                 return;
+               }else{
+                this.isPassportPhotoSelected = false;
+                this.passportPhotoMsg = 'Passport photo upload failed!';
+               }
+
+               
+
+    //  let modifiedString = response.body.replace(/'([^']+)'(?=:)/g, '"$1"');
+      // Replace single quotes around values
+    //     console.log('##################### Response Body:', modifiedString);
+    //  modifiedString = modifiedString.replace(/'([^']+)'/g, '"$1"');
+              //const jsonString = jsonstr.replace(/(\w+)/g, '"$1"');
+               // console.log('Response Body:', jsonString);
+                // const parsedBody = JSON.parse(jsonString);
+                 //console.log('Parsed Body:', parsedBody);
+             } catch (e) {
+                 console.error('Error parsing JSON:', e);
+             }
+         }
+     }
 }

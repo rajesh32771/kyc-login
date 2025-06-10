@@ -30,9 +30,10 @@
     <label>
       Upload Passport Size Photo:
       <input type="file" accept="image/jpeg" (change)="onFileChange($event)" />
+      <div [innerText]="passportPhotoMsg"></div>
     </label>
 
-    <button type="submit" [disabled]="!isFormValid()">Submit KYC</button>
+    <button type="subm it" [disabled]="!isFormValid()">Submit KYC</button>
     <button type="button" (click)="btnCancel()" class="cancelBtn">Cancel</button>
 
   </form>
