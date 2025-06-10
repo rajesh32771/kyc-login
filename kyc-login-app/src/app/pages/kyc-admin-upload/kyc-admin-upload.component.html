@@ -28,8 +28,8 @@
     </label>
 
     <label>
-      Upload Video:
-      <input type="file" accept="video/*" (change)="onVideoSelected($event)" />
+      Upload Passport Size Photo:
+      <input type="file" accept="image/jpeg" (change)="onFileChange($event)" />
     </label>
 
     <button type="submit" [disabled]="!isFormValid()">Submit KYC</button>

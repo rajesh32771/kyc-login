@@ -193,4 +193,40 @@ export class KycAdminUploadComponent implements OnInit {
       alert('Only PDF files are allowed');
     }
   }
+
+  onFileChange(event: any): void {
+    console.log('validating file change')
+  const file = event.target.files[0];
+  if (file) {
+    console.log('file correct')
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = (reader.result as string).split(',')[1]; // remove data:image/jpeg;base64,
+   //   const base64String = reader.result as string; // keep the full data URL
+     console.log('Base64 String:', base64String);
+    const paddedBase64 = this.padBase64(base64String); // ensure correct length
+    console.log(paddedBase64); // send this to your API
+      this.uploadToApi(paddedBase64);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+uploadToApi(base64Image: string): void {
+  const payload = {
+    photo: base64Image
+  };
+
+  this.http.post('https://6xwvmbv78k.execute-api.us-west-2.amazonaws.com/kyc/PassportPhoto', payload).subscribe({
+    next: res => console.log('Upload success', res),
+    error: err => console.error('Upload failed', err)
+  });
+}
+padBase64(base64: string): string {
+  const remainder = base64.length % 4;
+  if (remainder > 0) {
+    return base64 + '='.repeat(4 - remainder);
+  }
+  return base64;
+}
 }
