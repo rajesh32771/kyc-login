@@ -97,55 +97,7 @@ export class KycAdminUploadComponent implements OnInit {
 
   submit() {
     
-    let formData = new FormData();
-    formData = new FormData();
-    if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
-    // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
-
-    this.http
-      .post(
-        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
-        formData
-      )
-      .subscribe({
-        next: (res) => alert('aadhar Files uploaded successfully!'),
-        error: () => alert('Upload failed!'),
-      });
-
-    formData = new FormData();
-    if (this.audioFile) {
-      formData.append('audio', this.audioFile);
-      // if (this.videoFile) formData.append('video', this.videoFile);
-      formData.append('name', this.userData.name);
-      formData.append('rm', this.userData.rm);
-
-      this.http
-        .post(
-          'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
-          formData
-        )
-        .subscribe({
-          next: (res) => alert('audio Files uploaded successfully!'),
-          error: () => alert('Upload failed!'),
-        });
-    }
-    formData = new FormData();
-    if (this.videoFile) formData.append('video', this.videoFile);
-    // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
-
-    this.http
-      .post(
-        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
-        formData
-      )
-      .subscribe({
-        next: (res) => alert('video Files uploaded successfully!'),
-        error: () => alert('Upload failed!'),
-      });
+    //different API will be call
 
     // Normally, here you'd send form data to the backend
   }
@@ -190,6 +142,23 @@ export class KycAdminUploadComponent implements OnInit {
     if (file && file.type === 'application/pdf') {
       this.pdfFile = file;
       this.isAadhardSelected = true;
+
+    let formData = new FormData();
+    formData = new FormData();
+    if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
+    // if (this.videoFile) formData.append('video', this.videoFile);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
+
+    this.http
+      .post(
+        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
+        formData
+      )
+      .subscribe({
+        next: (res) => alert('aadhar Files uploaded successfully!'),
+        error: () => alert('Upload failed!'),
+      });
     } else {
       this.isAadhardSelected = false;
       alert('Only PDF files are allowed');
