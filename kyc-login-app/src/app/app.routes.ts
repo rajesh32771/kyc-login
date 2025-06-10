@@ -17,9 +17,5 @@ export const routes: Routes = [
   { path: 'user-upload', component: KycUserUploadComponent },
   { path: 'admin-upload', component: KycAdminUploadComponent },
   { path: 'kyc-details/:id', component: KycDetailsComponent },
-  { path: 'kyc-video', component: KycVideoRecorderComponent }
-
-
-
+  { path: 'kyc-video', component: KycVideoRecorderComponent },
 ];
-

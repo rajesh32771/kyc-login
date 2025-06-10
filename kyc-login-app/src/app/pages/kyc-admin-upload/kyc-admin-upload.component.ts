@@ -84,6 +84,10 @@ export class KycAdminUploadComponent {
     }
   }
 
+  btnCancel() {
+    this.router.navigate(['/kyc-dashboard']);
+  }
+
   submit() {
     const formData = new FormData();
 

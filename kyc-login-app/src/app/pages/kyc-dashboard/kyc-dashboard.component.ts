@@ -65,7 +65,9 @@ export class KycDashboardComponent {
     this.router.navigate(['/admin-upload']);
   }
 
-  retryKyc(user: any) {}
+  retryKyc(user: any) {
+     this.router.navigate(['/admin-upload']);
+  }
 
   close() {
     this.selectedUser = null;
