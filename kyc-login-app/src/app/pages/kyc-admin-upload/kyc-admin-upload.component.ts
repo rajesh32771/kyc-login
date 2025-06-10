@@ -132,21 +132,22 @@ export class KycAdminUploadComponent implements OnInit {
       });
 
     formData = new FormData();
-    if (this.audioFile) formData.append('audio', this.audioFile);
-    // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
+    if (this.audioFile) {
+      formData.append('audio', this.audioFile);
+      // if (this.videoFile) formData.append('video', this.videoFile);
+      formData.append('name', this.userData.name);
+      formData.append('rm', this.userData.rm);
 
-    this.http
-      .post(
-        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
-        formData
-      )
-      .subscribe({
-        next: (res) => alert('audio Files uploaded successfully!'),
-        error: () => alert('Upload failed!'),
-      });
-
+      this.http
+        .post(
+          'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
+          formData
+        )
+        .subscribe({
+          next: (res) => alert('audio Files uploaded successfully!'),
+          error: () => alert('Upload failed!'),
+        });
+    }
     formData = new FormData();
     if (this.videoFile) formData.append('video', this.videoFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
