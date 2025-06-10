@@ -96,25 +96,8 @@ export class KycAdminUploadComponent implements OnInit {
   }
 
   submit() {
+    
     let formData = new FormData();
-
-    if (this.imageFile) formData.append('panCard', this.imageFile);
-
-    // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
-    const headers = new HttpHeaders({ 'Content-Type': 'multipart/form-data' });
-
-    this.http
-      .post(
-        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
-        formData
-      )
-      .subscribe({
-        next: (res) => alert('panCard uploaded successfully!'),
-        error: () => alert('Upload failed!'),
-      });
-
     formData = new FormData();
     if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
@@ -178,6 +161,25 @@ export class KycAdminUploadComponent implements OnInit {
       this.imageFile = file;
       this.isPanCardSelected = true;
       this.form.pan = file;
+      let formData = new FormData();
+
+    if (this.imageFile) formData.append('panCard', this.imageFile);
+
+    // if (this.videoFile) formData.append('video', this.videoFile);
+    formData.append('name', this.userData.name);
+    formData.append('rm', this.userData.rm);
+    const headers = new HttpHeaders({ 'Content-Type': 'multipart/form-data' });
+
+    this.http
+      .post(
+        'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/kyc/uploadKYCFiles',
+        formData
+      )
+      .subscribe({
+        next: (res) => alert('panCard uploaded successfully!'),
+        error: () => alert('Upload failed!'),
+      });
+
     } else {
       this.isPanCardSelected = false;
     }
