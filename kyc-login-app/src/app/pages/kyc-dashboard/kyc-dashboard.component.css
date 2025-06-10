@@ -70,8 +70,8 @@ button {
 }
 
 .button:hover {
-      opacity: 0.9;
-    }
+  opacity: 0.9;
+}
 
 /* Modal styles */
 .modal-backdrop {

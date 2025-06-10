@@ -77,6 +77,10 @@ export class KycUserUploadComponent {
     }
   }
 
+  btnCancel() {
+    this.router.navigate(['/login']);
+  }
+
   onVideoSelected(event: any): void {
     const file = event.target.files[0];
     if (file && file.type.startsWith('video/')) this.videoFile = file;

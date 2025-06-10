@@ -98,3 +98,17 @@ button img {
   background-color: #125ea7;
   transform: scale(1.05);
 }
+
+.cancelBtn {
+ margin-left: 10px;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+}
