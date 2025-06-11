@@ -107,7 +107,7 @@ export class KycAdminUploadComponent implements OnInit {
       if (this.imageFile) formData.append('audio', this.audioFile);
 
       // if (this.videoFile) formData.append('video', this.videoFile);
-      //formData.append('name', this.userData.name);
+      formData.append('audio', this.audioFile);
       //formData.append('rm', this.userData.rm);
       const headers = new HttpHeaders({
         'Content-Type': 'multipart/form-data',
@@ -115,7 +115,7 @@ export class KycAdminUploadComponent implements OnInit {
 
       this.http
         .post(
-          'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/uploadKYCFiles',
+          'https://8g9i5dxsl7.execute-api.us-west-2.amazonaws.com/default/uploadAudioFiles',
           formData
         )
         .subscribe({
