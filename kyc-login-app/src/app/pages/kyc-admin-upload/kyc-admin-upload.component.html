@@ -12,10 +12,22 @@
       <input type="text" [(ngModel)]="userData.rm" name="rm" required />
     </label>
 
-    <label>
-      Upload Driving License Card:
-      <input type="file" (change)="onImageSelected($event)" accept="image/jpeg, image/jpg, image/png" required />
-    </label>
+     <div class="upload-wrapper">
+      <label class="file-label">
+        Upload Driving License Card:
+        <input type="file" (change)="onImageSelected($event)" accept="image/jpeg, image/jpg, image/png" required />
+      </label>
+
+       <!-- Loader Spinner -->
+      <mat-progress-spinner *ngIf="isDlUploading" diameter="24" mode="indeterminate" color="primary"
+        class="icon-spinner"></mat-progress-spinner>
+
+      <!-- View Icon -->
+      <mat-icon *ngIf="showDlViewIcon" class="icon-view" color="primary" (click)="fetchDLAndOpenFile()">
+        visibility
+      </mat-icon>
+
+    </div>
 
     <label>
       Upload Aadhaar Card:
@@ -26,14 +38,25 @@
       Upload Optional Audio:
       <input type="file" accept="audio/*" (change)="onAudioFileSelected($event)" />
     </label>
+    <div class="upload-wrapper">
+      <label class="file-label">
+        Upload Passport Size Photo:
+        <input type="file" accept="image/jpeg" (change)="onFileChange($event)" />
+        <div [innerText]="passportPhotoMsg"></div>
+      </label>
 
-    <label>
-      Upload Passport Size Photo:
-      <input type="file" accept="image/jpeg" (change)="onFileChange($event)" />
-      <div [innerText]="passportPhotoMsg"></div>
-    </label>
+      <!-- Loader Spinner -->
+      <mat-progress-spinner *ngIf="isphotoUploading" diameter="24" mode="indeterminate" color="primary"
+        class="icon-spinner"></mat-progress-spinner>
 
-    <button type="subm it" [disabled]="!isFormValid()">Submit KYC</button>
+      <!-- View Icon -->
+      <mat-icon *ngIf="showPhotoViewIcon" class="icon-view" color="primary" (click)="fetchAndOpenFile()">
+        visibility
+      </mat-icon>
+
+    </div>
+
+    <button type="submit" [disabled]="!isFormValid()">Submit KYC</button>
     <button type="button" (click)="btnCancel()" class="cancelBtn">Cancel</button>
 
   </form>

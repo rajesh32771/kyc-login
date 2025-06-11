@@ -59,3 +59,75 @@ input[type="file"]:hover {
 .cancelBtn {
   margin-left: 20px;
 }
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-label input[type="file"] {
+  margin-left: 8px;
+  width: 550px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.view-icon:hover {
+  filter: brightness(0.8);
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.icon-spinner {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  margin-left: -25px;
+}
+
+.icon-view {
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: -25px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}

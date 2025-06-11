@@ -3,11 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { MatDialog } from '@angular/material/dialog';
+import { DataModalComponent } from '../model/data-modal.component';
+
+
 
 @Component({
   selector: 'app-kyc-admin-upload',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatProgressSpinnerModule],
   styleUrl: './kyc-admin-upload.component.css',
   templateUrl: './kyc-admin-upload.component.html',
 })
@@ -25,6 +32,7 @@ export class KycAdminUploadComponent implements OnInit {
   pdfFile: File | null = null;
   videoFile: File | null = null;
   audioFile: File | null = null;
+  photoFile: File | null = null;
   splitArray: string[] = [];
   passportPhotoMsg: string = '';
 
@@ -32,9 +40,16 @@ export class KycAdminUploadComponent implements OnInit {
   isAadhardSelected: boolean = false;
   isAudioFileSelected: boolean = true;
   isPassportPhotoSelected: boolean = false;
+
+  isphotoUploading: boolean = false;
+  showPhotoViewIcon: boolean = false;
+
+  isDlUploading: boolean = false;
+  showDlViewIcon: boolean = false;
+
   userData: any = null;
   submitted: boolean = false;
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.userData = history.state.user;
@@ -93,18 +108,109 @@ export class KycAdminUploadComponent implements OnInit {
     }
   }
 
+  fetchAndOpenFile(): void {
+    const payload = {
+      processing_method: 'DetectDocumentText', // or 'AnalyzeDocument' for forms
+      Records: [
+        {
+          s3: {
+            bucket: { name: 'dbdtcckyctextract' },
+            object: { key: this.photoFile?.name },
+          },
+        },
+      ],
+    };
+
+    this.http
+      .post(
+        'https://hx2lvepxw7.execute-api.us-west-2.amazonaws.com/textract-prod/extract-form',
+        payload
+      )
+      .subscribe({
+        next: (res) => console.log('Response:', res),
+        error: (err) => console.error('Error:', err),
+      });
+  }
+
+
+  fetchDLAndOpenFile(): void {
+    const payload = {
+      processing_method: 'DetectDocumentText', // or 'AnalyzeDocument' for forms
+      Records: [
+        {
+          s3: {
+            bucket: { name: 'dbdtcckyctextract' },
+            object: { key:  this.imageFile?.name },
+          },
+        },
+      ],
+    };
+
+    this.http
+      .post(
+        'https://hx2lvepxw7.execute-api.us-west-2.amazonaws.com/textract-prod/extract-form',
+        payload
+      )
+      .subscribe({
+        next: (res) => {
+          console.log(res)
+
+          // const parsedBody = JSON.parse(res.body);
+
+          // Convert to array format for table:
+          const tableData = Object.entries(res).map(([key, value]) => ({
+            key,
+            value
+          }));
+
+          // console.log(tableData);
+
+          let diplayData;
+          for (const [key, value] of Object.entries(res)) {
+            if(key == 'body') {
+              // console.log('Key:', key, 'Value:', value);
+              diplayData =JSON.parse(value);
+            }
+          }
+
+
+          for (const [key, value] of Object.entries(diplayData)) {
+            // if(key == 'body') {
+              console.log(value);
+            //   diplayData =value;
+            // }
+          }
+
+          // console.log(diplayData)
+          console.log(" Coming start ");
+
+          this.dialog.open(DataModalComponent, {
+            data: diplayData,
+            width: '600px'
+          });
+          console.log(" Coming end ");
+
+        },
+        error: (err) => console.error('Error:', err),
+      });
+  }
+
+
+  closeAadharModal(): void {}
+
   btnCancel() {
     this.router.navigate(['/kyc-dashboard']);
   }
 
   submit() {
-    
+
     //different API will be call
 
     // Normally, here you'd send form data to the backend
   }
 
   onImageSelected(event: any): void {
+    this.isDlUploading = true;
     const file = event.target.files[0];
     if (
       file &&
@@ -134,6 +240,23 @@ export class KycAdminUploadComponent implements OnInit {
         error: () => alert('Driving license uploaded successfully!'),
       });
 
+      this.http
+        .post(
+          'https://4gv6vfzcq4.execute-api.us-west-2.amazonaws.com/kyc/uploadKYCFiles',
+          formData
+        )
+        .subscribe({
+          next: (res) => {
+            this.isDlUploading = false;
+            this.showDlViewIcon = true;
+            alert('panCard uploaded successfully!')
+          },
+          error: () =>  {
+             this.showDlViewIcon = true;
+            this.isDlUploading = false;
+            // alert('Upload failed!')
+          },
+        });
     } else {
       this.isPanCardSelected = false;
     }
@@ -197,11 +320,11 @@ uploadToApi(base64Image: string): void {
   this.http.post('https://6xwvmbv78k.execute-api.us-west-2.amazonaws.com/kyc/PassportPhoto', payload).subscribe({
     next: res => {
    //   console.log('Upload success', res)
-      
+
       this.processResponse(res)
     },
     error: err => console.error('Upload failed', err)
-  }); 
+  });
 }
 padBase64(base64: string): string {
   const remainder = base64.length % 4;
@@ -213,7 +336,7 @@ padBase64(base64: string): string {
  processResponse(response: any) {
          if (response && response.body) {
              try {
-              
+
               //   const jsonString = response.body.replace(/'/g, '"');
                    // Replace single quotes around keys
              //let      jsonstr = response.body.replace(/'([^']+)':/g, '$1:');
@@ -232,7 +355,7 @@ padBase64(base64: string): string {
                 this.passportPhotoMsg = this.splitArray[0];
                }
 
-               
+
 
     //  let modifiedString = response.body.replace(/'([^']+)'(?=:)/g, '"$1"');
       // Replace single quotes around values
