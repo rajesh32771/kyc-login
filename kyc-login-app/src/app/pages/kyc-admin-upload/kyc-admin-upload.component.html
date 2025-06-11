@@ -35,7 +35,7 @@
         <input type="file" (change)="onPdfSelected($event)" accept="application/pdf" required />
       </label>
 
-       <!-- Loader Spinner -->
+      <!-- Loader Spinner -->
       <mat-progress-spinner *ngIf="isAadharUploading" diameter="24" mode="indeterminate" color="primary"
         class="icon-spinner"></mat-progress-spinner>
 
@@ -46,10 +46,23 @@
 
     </div>
 
-    <label>
-      Upload Optional Audio:
-      <input type="file" accept="audio/*" (change)="onAudioFileSelected($event)" />
-    </label>
+    <div class="upload-wrapper">
+      <label class="file-label">
+        Upload Optional Audio:
+        <input type="file" accept="audio/*" (change)="onAudioFileSelected($event)" />
+      </label>
+
+      <!-- Loader Spinner -->
+      <mat-progress-spinner *ngIf="isAudiolUploading" diameter="24" mode="indeterminate" color="primary"
+        class="icon-spinner"></mat-progress-spinner>
+
+      <!-- View Icon -->
+      <mat-icon *ngIf="showAudioViewIcon" class="icon-view" color="primary" (click)="fetchAudioOpenFile()">
+        visibility
+      </mat-icon>
+
+    </div>
+
     <div class="upload-wrapper">
       <label class="file-label">
         Upload Passport Size Photo:
