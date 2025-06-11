@@ -7,8 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ChatbotService } from '../../services/chat.service';
-
-
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+interface ApiResponse {
+  statusCode: number;
+  body: string;
+}
 @Component({
   selector: 'app-chatbot',
   standalone: true,
@@ -29,7 +33,7 @@ export class ChatbotComponent {
   userInput = '';
   isLoading = false;
 
-  constructor(private chatbotService: ChatbotService) {}
+  constructor(private chatbotService: ChatbotService,private http: HttpClient) {}
 
   sendMessage() {
     const message = this.userInput.trim();
@@ -39,15 +43,34 @@ export class ChatbotComponent {
     this.userInput = '';
     this.isLoading = true;
 
-    this.chatbotService.sendMessage(message).subscribe({
-      next: (res) => {
-        this.messages.push({ from: 'bot', text: res.reply });
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.messages.push({ from: 'bot', text: '❌ Error getting reply.' });
-        this.isLoading = false;
-      }
+
+ const payload = {
+      body: JSON.stringify({ prompt: message }) // "body" as string
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
     });
+
+    this.http.post<ApiResponse>('https://fltq3p3i31.execute-api.us-west-2.amazonaws.com/bot/kyc-chat-bot', payload, { headers })
+      .subscribe({
+        next: (res) => {
+          // Step 1: Parse outer body if it's a stringified JSON
+          const parsedBody = JSON.parse(res.body);
+
+          // Step 2: Extract the 'response' value
+          let responseText = parsedBody.response;
+
+          console.log('✅ Extracted response:', responseText);
+          this.messages.push({ from: 'user', text: responseText });
+        },
+        error: (err) => {
+          console.error('❌ API error:', err);
+        }
+       // next: res => console.log('Response:', res),
+       // error: err => console.error('Error:', err)
+      });
+  
+
   }
 }

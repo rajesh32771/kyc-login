@@ -8,12 +8,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatbotService {
-  private apiUrl = 'https://6c14h7v1ef.execute-api.us-west-2.amazonaws.com/kycbot/chatbotLambda3'; // Replace with your actual endpoint
+  private apiUrl = 'https://fltq3p3i31.execute-api.us-west-2.amazonaws.com/bot/kyc-chat-bot'; // Replace with your actual endpoint
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(prompt: string): Observable<{ reply: string }> {
-    return this.http.post<{ reply: string }>(this.apiUrl, { prompt });
-  }
+//  sendMessage(prompt: string): Observable<{ reply: string }> {
+//    return this.http.post<{ reply: string }>(this.apiUrl, { prompt });
+//  }
+
+  sendMessage() {
+  const payload = {
+    prompt: 'Tell me a fun fact about space.'
+  };
+
+  this.http.post('https://fltq3p3i31.execute-api.us-west-2.amazonaws.com/bot/kyc-chat-bot', payload)
+    .subscribe(response => {
+      console.log(response);
+    });
+}
 }
 
