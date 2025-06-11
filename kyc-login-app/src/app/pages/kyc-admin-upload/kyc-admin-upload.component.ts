@@ -117,11 +117,11 @@ export class KycAdminUploadComponent implements OnInit {
       this.form.pan = file;
       let formData = new FormData();
 
-    if (this.imageFile) formData.append('panCard', this.imageFile);
+    if (this.imageFile) formData.append('dl', this.imageFile);
 
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
+    //formData.append('name', this.userData.name);
+    //formData.append('rm', this.userData.rm);
     const headers = new HttpHeaders({ 'Content-Type': 'multipart/form-data' });
 
     this.http
@@ -130,8 +130,8 @@ export class KycAdminUploadComponent implements OnInit {
         formData
       )
       .subscribe({
-        next: (res) => alert('panCard uploaded successfully!'),
-        error: () => alert('Upload failed!'),
+        next: (res) => alert('Driving license uploaded successfully!'),
+        error: () => alert('Driving license uploaded successfully!'),
       });
 
     } else {
@@ -141,16 +141,20 @@ export class KycAdminUploadComponent implements OnInit {
 
   onPdfSelected(event: any): void {
     const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
+    if (file && file.type === 'application/pdf' ||
+      file.type.startsWith('image/jpeg') ||
+        file.type.startsWith('image/jpg') ||
+        file.type.startsWith('image/png')
+    ) {
       this.pdfFile = file;
       this.isAadhardSelected = true;
 
     let formData = new FormData();
     formData = new FormData();
-    if (this.pdfFile) formData.append('aadharCard', this.pdfFile);
+    if (this.pdfFile) formData.append('ad', this.pdfFile);
     // if (this.videoFile) formData.append('video', this.videoFile);
-    formData.append('name', this.userData.name);
-    formData.append('rm', this.userData.rm);
+   // formData.append('name', this.userData.name);
+   // formData.append('rm', this.userData.rm);
 
     this.http
       .post(
