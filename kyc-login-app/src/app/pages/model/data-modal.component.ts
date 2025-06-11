@@ -19,6 +19,7 @@ export class DataModalComponent {
   ) {}
 
   dataArray() {
+    console.log(this.data)
     return Object.entries(this.data).map(([key, value]) => ({ key, value }));
   }
 

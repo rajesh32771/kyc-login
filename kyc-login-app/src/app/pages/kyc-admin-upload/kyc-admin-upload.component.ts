@@ -47,6 +47,9 @@ export class KycAdminUploadComponent implements OnInit {
   isDlUploading: boolean = false;
   showDlViewIcon: boolean = false;
 
+  isAadharUploading: boolean = false;
+  showAadharViewIcon: boolean = false;
+
   userData: any = null;
   submitted: boolean = false;
   constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) {}
@@ -132,6 +135,68 @@ export class KycAdminUploadComponent implements OnInit {
       });
   }
 
+  fetchAadharOpenFile(): void {
+    const payload = {
+      processing_method: 'DetectDocumentText', // or 'AnalyzeDocument' for forms
+      Records: [
+        {
+          s3: {
+            bucket: { name: 'dbdtcckyctextract' },
+            object: { key:  this.pdfFile?.name },
+          },
+        },
+      ],
+    };
+
+    this.http
+      .post(
+        'https://hx2lvepxw7.execute-api.us-west-2.amazonaws.com/textract-prod/extract-form',
+        payload
+      )
+      .subscribe({
+        next: (res) => {
+          console.log(res)
+
+          // const parsedBody = JSON.parse(res.body);
+
+          // Convert to array format for table:
+          const tableData = Object.entries(res).map(([key, value]) => ({
+            key,
+            value
+          }));
+
+          // console.log(tableData);
+
+          let diplayData;
+          for (const [key, value] of Object.entries(res)) {
+            if(key == 'body') {
+              // console.log('Key:', key, 'Value:', value);
+              diplayData =JSON.parse(value);
+            }
+          }
+
+
+          for (const [key, value] of Object.entries(diplayData)) {
+            // if(key == 'body') {
+              console.log(value);
+            //   diplayData =value;
+            // }
+          }
+
+          // console.log(diplayData)
+          console.log(" Coming start ");
+
+          this.dialog.open(DataModalComponent, {
+            data: diplayData,
+            width: '600px'
+          });
+          console.log(" Coming end ");
+
+        },
+        error: (err) => console.error('Error:', err),
+      });
+  }
+
 
   fetchDLAndOpenFile(): void {
     const payload = {
@@ -211,6 +276,7 @@ export class KycAdminUploadComponent implements OnInit {
 
   onImageSelected(event: any): void {
     this.isDlUploading = true;
+    this.showDlViewIcon = false;
     const file = event.target.files[0];
     if (
       file &&
@@ -263,6 +329,8 @@ export class KycAdminUploadComponent implements OnInit {
   }
 
   onPdfSelected(event: any): void {
+    this.isAadharUploading = true;
+    this.showAadharViewIcon = false;
     const file = event.target.files[0];
     if (file && file.type === 'application/pdf' ||
       file.type.startsWith('image/jpeg') ||
@@ -285,8 +353,15 @@ export class KycAdminUploadComponent implements OnInit {
         formData
       )
       .subscribe({
-        next: (res) => alert('aadhar Files uploaded successfully!'),
-        error: () => alert('Upload failed!'),
+        next: (res) => {
+             this.isAadharUploading = false;
+            this.showAadharViewIcon = true;
+          alert('aadhar Files uploaded successfully!')
+        },
+        error: () =>  {
+            this.isAadharUploading = false;
+            this.showAadharViewIcon = true;
+        },
       });
     } else {
       this.isAadhardSelected = false;
